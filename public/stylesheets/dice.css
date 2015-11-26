@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'dice';
+    src:    url('../fonts/dPoly%20Block%20Dice.otf') format('opentype');
+}
+
+.dice {
+    font-family: dice, sans-serif;
+}
+
+.primaryDice {
+    color: red;
+}
+
+.secondaryDice {
+    color: blue;
+}
+
+.tertiaryDice {
+    color: white;
+    background: black;
+}

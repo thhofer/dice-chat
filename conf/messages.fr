@@ -1,0 +1,1 @@
+main.title  = "Bienvenue sur DiceChat!"

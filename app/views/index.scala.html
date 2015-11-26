@@ -1,0 +1,11 @@
+@(userForm: Form[String])(implicit messages: Messages)
+
+@main(Messages("main.title")) {
+    <h1>Websockets sample app</h1>
+
+    <h1>Chatroom</h1>
+
+    @helper.form(action = routes.Chat.showRoom()) {
+        @helper.inputText(userForm("nick"))
+    }
+}
