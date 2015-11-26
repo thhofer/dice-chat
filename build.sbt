@@ -1,4 +1,4 @@
-import scoverage.ScoverageSbtPlugin
+import scoverage.ScoverageKeys
 
 name := "DiceChat"
 
@@ -17,6 +17,4 @@ libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % 
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
-ScoverageSbtPlugin.instrumentSettings
-
-CoverallsPlugin.coverallsSettings
+ScoverageKeys.coverageExcludedPackages := """controllers\..*Reverse.*;router.Routes.*;"""
