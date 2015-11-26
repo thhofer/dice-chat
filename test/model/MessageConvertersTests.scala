@@ -26,10 +26,10 @@ class MessageConvertersTests extends Specification {
       parseResult.isEmpty mustEqual false
     }
     "as an Action command" in {
-      parseResult.get must haveClass[Action]
+      parseResult.get must haveClass[ActionMessage]
     }
     "with the adequate values" in {
-      parseResult.get mustEqual Action("sighs")
+      parseResult.get mustEqual ActionMessage("sighs")
     }
   }
 
@@ -39,10 +39,10 @@ class MessageConvertersTests extends Specification {
       parseResult.isEmpty mustEqual false
     }
     "as a Roll command" in {
-      parseResult.get must haveClass[Roll]
+      parseResult.get must haveClass[RollMessage]
     }
     "with the adequate values" in {
-      parseResult.get mustEqual Roll(3, 6)
+      parseResult.get mustEqual RollMessage(3, 6)
     }
   }
 
@@ -52,10 +52,10 @@ class MessageConvertersTests extends Specification {
       parseResult.isEmpty mustEqual false
     }
     "as a Roll command" in {
-      parseResult.get must haveClass[Roll]
+      parseResult.get must haveClass[RollMessage]
     }
     "with the adequate values" in {
-      parseResult.get mustEqual Roll(3, 6)
+      parseResult.get mustEqual RollMessage(3, 6)
     }
   }
 

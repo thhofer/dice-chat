@@ -5,17 +5,17 @@ import scala.util.parsing.combinator.RegexParsers
 /**
   * Missing javadoc!
   */
-object MessageParser extends RegexParsers {
+class MessageParser(nick: String) extends RegexParsers {
   def message: Parser[Message] = command | plainText
 
   def command: Parser[Command] = roll | action
 
-  def action: Parser[Action] = literal("/me ") ~> """.*""".r ^^ {
-    Action
+  def action: Parser[ActionMessage] = literal("/me ") ~> """.*""".r ^^ { action =>
+    ActionMessage(nick, action)
   }
 
-  def roll: Parser[Roll] = literal("/roll ") ~> """\d*""".r ~ diceSides ^^ {
-    case n ~ sides => Roll(n.toInt, sides)
+  def roll: Parser[RollMessage] = literal("/roll ") ~> """\d*""".r ~ diceSides ^^ {
+    case n ~ sides => RollMessage(nick, n.toInt, sides)
   }
 
   def diceSides: Parser[Int] = literal("d") ~> """\d+""".r ^^ {
@@ -23,7 +23,7 @@ object MessageParser extends RegexParsers {
   }
 
   def plainText: Parser[SimpleMessage] =
-    """.*""".r ^^ {
-      SimpleMessage
+    """.*""".r ^^ { message =>
+      SimpleMessage(nick, message)
     }
 }

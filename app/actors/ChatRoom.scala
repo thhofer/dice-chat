@@ -5,7 +5,7 @@ import akka.event.Logging
 import model.MessageConverters.messageWrites
 import model.{JoinMessage, LeaveMessage, MessageParser}
 import play.api.libs.iteratee.{Concurrent, Enumerator, Iteratee}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsDefined, JsValue, Json}
 
 import scala.concurrent.ExecutionContext
 
@@ -29,7 +29,7 @@ class ChatRoom extends Actor {
       log.info(s"user $nick joined")
       if (!users.contains(nick)) {
         val iteratee: Iteratee[JsValue, _] = Iteratee.foreach[JsValue] { message =>
-          self ! Broadcast(nick, message.toString())
+          self ! Broadcast(nick, (message \ "text").as[String])
         }.map { _ =>
           self ! Leave(nick)
         }
@@ -54,7 +54,8 @@ class ChatRoom extends Actor {
       channel.push(Json.toJson(LeaveMessage(nick, users.size)))
     case Broadcast(nick: String, msg: String) =>
       log.info(s"user $nick sent $msg")
-      MessageParser.parse(MessageParser.message, msg).map {
+      val parser: MessageParser = new MessageParser(nick)
+      parser.parse(parser.message, msg).map {
         m => channel.push(Json.toJson(m))
       }
   }
