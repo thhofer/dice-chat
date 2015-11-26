@@ -1,3 +1,5 @@
+import scoverage.ScoverageSbtPlugin
+
 name := "DiceChat"
 
 version := "1.0"
@@ -14,3 +16,7 @@ libraryDependencies ++= Seq(cache , specs2 % Test )
 libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+
+ScoverageSbtPlugin.instrumentSettings
+
+CoverallsPlugin.coverallsSettings
