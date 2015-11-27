@@ -4,4 +4,4 @@ scala:
 jdk:
   - oraclejdk8
 script:
-- sbt scoverage:test
+- sbt clean coverage test
