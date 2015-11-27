@@ -15,6 +15,10 @@ libraryDependencies ++= Seq(cache , specs2 % Test )
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
 
+libraryDependencies += "org.webjars" % "bootstrap" % "3.3.5"
+
+libraryDependencies += "org.webjars" % "jquery" % "2.1.4"
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 ScoverageKeys.coverageExcludedPackages := """controllers\..*Reverse.*;router.Routes.*;"""
