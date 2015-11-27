@@ -6,7 +6,8 @@ import org.specs2.mutable.Specification
   * Missing javadoc!
   */
 class MessageConvertersTests extends Specification {
-  val messageParser = new MessageParser("TestUser")
+  val testUser = "TestUser"
+  val messageParser = new MessageParser(testUser)
 
   "The 'Hello world' string" should {
     val parseResult = messageParser.parse(messageParser.message, "Hello world")
@@ -52,11 +53,18 @@ class MessageConvertersTests extends Specification {
     "be parsed successfully [with roll]" in {
       parseResult.isEmpty mustEqual false
     }
-    "as a Roll command" in {
+    "as a RollMessage" in {
       parseResult.get must haveClass[RollMessage]
     }
-    "with the adequate values" in {
-      parseResult.get mustEqual RollMessage("TestUser", 3, 6)
+    val rollMessage = parseResult.get
+    "from user 'TestUser'" in {
+      rollMessage.nick mustEqual testUser
+    }
+    "with 3 dice" in {
+      rollMessage.count mustEqual 3
+    }
+    "of 6 sides" in {
+      rollMessage.sides mustEqual 6
     }
   }
 

@@ -39,8 +39,7 @@ class Chat @Inject()(val messagesApi: MessagesApi) extends Controller with I18nS
 
   def showRoom = Action { implicit request =>
     Chat.userForm.bindFromRequest.fold(
-      formWithErrors =>
-        BadRequest(views.html.index(formWithErrors)), { case (nick) => Ok(views.html.chat.showRoom(nick)) }
+      formWithErrors => BadRequest(views.html.index(formWithErrors)), { case (nick) => Ok(views.html.chat.showRoom(nick)) }
     )
   }
 
