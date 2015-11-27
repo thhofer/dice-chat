@@ -1,1 +1,9 @@
-main.title  = "Bienvenue sur DiceChat!"
+main.title  = Bienvenue sur DiceChat!
+
+login.chooseUsername = Choisis ton nom d''utilisateur...
+login.nick.label    = Nom d''utilisateur
+login.nick.placeholder   = Mon nom d''utilisateur
+login.nick.help = Merci de saisir ton nom d''utilisateur. (requis)
+login.submit.button = Ok!
+
+error.minLength = Longueur minimale {0}

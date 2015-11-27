@@ -1,11 +1,15 @@
+@import views.html.chat.loginForm
+
 @(userForm: Form[String])(implicit messages: Messages)
 
 @main(Messages("main.title")) {
-    <h1>Websockets sample app</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>@Messages("login.chooseUsername")</h3>
+        </div>
+        <div class="panel-body">
+        @loginForm(userForm("nick"))
+        </div>
+    </div>
 
-    <h1>Chatroom</h1>
-
-    @helper.form(action = routes.Chat.showRoom()) {
-        @helper.inputText(userForm("nick"))
-    }
 }

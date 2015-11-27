@@ -1,0 +1,23 @@
+@(nickField: Field)(implicit messages: Messages)
+
+@helper.form(action = routes.Chat.showRoom()) {
+    <div class="form-group @if(nickField.hasErrors) {has-error}">
+        <label class="col-sm-2 control-label">@Messages("login.nick.label")</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input type="text" class="form-control"
+                id="@nickField.id" name="@nickField.name"
+                value="@nickField.value.getOrElse("")"
+                placeholder="@Messages("login.nick.placeholder")" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">@Messages("login.submit.button")</button>
+                </span>
+            </div>
+
+            <span class="help-block">@Messages("login.nick.help")</span>
+            <span class="help-block">@{
+                nickField.error.map { error => Messages(error.message, error.args: _*) }
+            }</span>
+        </div>
+    </div>
+}
