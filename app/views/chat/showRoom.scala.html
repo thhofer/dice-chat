@@ -1,28 +1,61 @@
 @(nick: String)(implicit request: RequestHeader)
 
 @main("Chatroom for " + nick) {
-    <h1>Chatroom - You are @nick</h1>
-    <form id="chatform">
-        <input id="text" placeholder="Say something..." />
-        <button type="submit">Say</button>
-    </form>
-    <ul id="messages"></ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Chatroom - You are @nick</h3>
+        </div>
+        <div class="panel-body">
+            <ul id="messages" class="list-group"></ul>
+        </div>
+        <div class="panel-footer">
+            <form id="chatform">
+                <input id="text" placeholder="Say something..." />
+                <button type="submit">Say</button>
+            </form>
+        </div>
 
-    <script type="text/javascript">
-            $(function() {
-                ws = new WebSocket("@routes.Chat.chatSocket(nick).webSocketURL()")
-                ws.onmessage = function(msg) {
-                    $('<li />').text(msg.data).appendTo('#messages')
-                }
-                $('#chatform').submit(function(){
-                    var textField = $('#text');
-                    ws.send(JSON.stringify(
-                            {text: textField.val()}
-                    ));
-                    textField.val("").focus()
-                    return false;
+        <script type="text/javascript">
+                $(function() {
+                    ws = new WebSocket("@routes.Chat.chatSocket(nick).webSocketURL()");
+                    ws.onmessage = function(msg) {
+                        var msgData = JSON.parse(msg.data);
+                        var item = $('<li />').addClass("list-group-item");
+                        if (msgData['type'] === 'text') {
+                            $('<strong />').addClass('nick').text(msgData['nick'] + ": ").appendTo(item);
+                            $('<em />').addClass('message').text(msgData['message']).appendTo(item);
+                        } else if (msgData['type'] === 'join') {
+                            $('<strong />').addClass('nick').text(msgData['nick'] + " ").appendTo(item);
+                            $('<em />').addClass('message').text("has joined the room.").appendTo(item);
+                        } else if (msgData['type'] === 'leave') {
+                            $('<strong />').addClass('nick').text(msgData['nick'] + " ").appendTo(item);
+                            $('<em />').addClass('message').text("has left the room.").appendTo(item);
+                        } else if (msgData['type'] === 'action') {
+                            $('<strong />').addClass('nick').text(msgData['nick'] + " ").appendTo(item);
+                            $('<em />').addClass('message').text(msgData['action']).appendTo(item);
+                        } else if (msgData['type'] === 'roll') {
+                            $('<strong />').addClass('nick').text(msgData['nick'] + " ").appendTo(item);
+                            // TODO pretty roll using dice-font?
+                            var text = "has rolled " + msgData['count'] + "d" + msgData['sides']
+                                        + " and got " + msgData['result'];
+                            $('<em />').addClass('message').text(text).appendTo(item);
+                        } else {
+                            // Force return to prevent adding an incomplete message to the chat
+                            return;
+                        }
+                        // TODO: prevent the history from growing too much: cleaning? scrolling + removing old messages?
+                        item.appendTo('#messages')
+                    };
+                    $('#chatform').submit(function(){
+                        var textField = $('#text');
+                        ws.send(JSON.stringify(
+                                {text: textField.val()}
+                        ));
+                        textField.val("").focus()
+                        return false;
+                    })
                 })
-            })
-    </script>
+        </script>
+    </div>
 
 }
